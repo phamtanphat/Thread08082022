@@ -24,10 +24,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 synchronized (myFlag){
-                    for (int i = 1; i <= 10; i++) {
+                    for (int i = 1; i <= 10;) {
                         if (myFlag.count == 1) {
                             a = i;
                             Log.d("BBB","A : " + a);
+                            myFlag.count = 2;
+                            myFlag.notifyAll();
+                            i++;
+                        } else {
+                            try {
+                                myFlag.wait();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
@@ -38,10 +47,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 synchronized (myFlag){
-                    for (int i = 1; i <= 10; i++) {
+                    for (int i = 1; i <= 10;) {
                         if (myFlag.count == 2) {
                             b = i;
                             Log.d("BBB","B : " + b);
+                            myFlag.count = 3;
+                            myFlag.notifyAll();
+                            i++;
+                        } else {
+                            try {
+                                myFlag.wait();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
@@ -52,10 +70,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 synchronized (myFlag){
-                    for (int i = 1; i <= 10; i++) {
+                    for (int i = 1; i <= 10;) {
                         if (myFlag.count == 3) {
                             c = a + b;
                             Log.d("BBB","C : " + c);
+                            myFlag.count = 1;
+                            myFlag.notifyAll();
+                            i++;
+                        } else {
+                            try {
+                                myFlag.wait();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
