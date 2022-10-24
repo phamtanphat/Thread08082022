@@ -17,13 +17,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         a = b = c;
+        MyFlag myFlag = new MyFlag(1);
 
        // Tạo thread
         Thread threadA = new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i = 1; i <= 10; i++) {
-                    a = i;
+                synchronized (myFlag){
+                    for (int i = 1; i <= 10; i++) {
+                        if (myFlag.count == 1) {
+                            a = i;
+                            Log.d("BBB","A : " + a);
+                        }
+                    }
                 }
             }
         });
@@ -31,8 +37,13 @@ public class MainActivity extends AppCompatActivity {
         Thread threadB = new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i = 1; i <= 10; i++) {
-                    b = i;
+                synchronized (myFlag){
+                    for (int i = 1; i <= 10; i++) {
+                        if (myFlag.count == 2) {
+                            b = i;
+                            Log.d("BBB","B : " + b);
+                        }
+                    }
                 }
             }
         });
@@ -40,8 +51,13 @@ public class MainActivity extends AppCompatActivity {
         Thread threadC = new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i = 1; i <= 10; i++) {
-                    c = a + b;
+                synchronized (myFlag){
+                    for (int i = 1; i <= 10; i++) {
+                        if (myFlag.count == 3) {
+                            c = a + b;
+                            Log.d("BBB","C : " + c);
+                        }
+                    }
                 }
             }
         });
